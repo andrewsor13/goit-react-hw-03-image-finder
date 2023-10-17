@@ -1,0 +1,11 @@
+.modalOverlay {
+  z-index: 999;
+  position: absolute;
+  background-color: gray;
+  width: 100vw;
+  height: 100vh;
+}
+
+.image {
+  position: absolute;
+}
