@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import SearchBar from './SearchBar/SearchBar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import '../index.css';
@@ -18,20 +18,19 @@ export const App = () => {
     setValue(value);
   };
 
-  const handleLoadMore = async value => {
-    const responseData = await resourceApi(value, counter);
-    setData(responseData);
-    setValue(value);
-  };
+  const fetchData = useCallback(
+    async value => {
+      const responseData = await resourceApi(value, counter);
+      setData(responseData);
+    },
+    [counter]
+  );
 
   useEffect(() => {
     if (counter !== 12) {
-      const fetchData = async () => {
-        await handleLoadMore(value);
-      };
-      fetchData();
+      fetchData(value);
     }
-  }, [counter]);
+  }, [counter, fetchData, value]);
 
   const handleClick = () => {
     setCounter(prevCount => prevCount + 12);
