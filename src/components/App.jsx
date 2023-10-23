@@ -5,23 +5,37 @@ import '../index.css';
 import { resourceApi } from 'api/api';
 import Button from './Button/Button';
 import styles from './App.module.css';
+import Loader from './Loader/Loader';
 
 export const App = () => {
   const [data, setData] = useState({});
   const [value, setValue] = useState();
   const [counter, setCounter] = useState(12);
+  const [loader, setLoader] = useState(false);
+
+  const showLoader = () => {
+    setLoader(true);
+  };
+
+  const hideLoader = () => {
+    setLoader(false);
+  };
 
   const handleSearch = async value => {
     await setCounter(12);
+    showLoader();
     const responseData = await resourceApi(value, 12);
     setData(responseData);
     setValue(value);
+    hideLoader();
   };
 
   const fetchData = useCallback(
     async value => {
+      showLoader();
       const responseData = await resourceApi(value, counter);
       setData(responseData);
+      hideLoader();
     },
     [counter]
   );
@@ -40,6 +54,7 @@ export const App = () => {
     <div className="container">
       <SearchBar onSearch={handleSearch} />
       <ImageGallery searchValue={data.hits} />
+      <div className={styles.loaderContainer}>{loader ? <Loader /> : null}</div>
 
       {counter < data.totalHits ? (
         <div className={styles.button}>
