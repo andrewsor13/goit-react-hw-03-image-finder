@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './ImageGalleryItem.module.css';
 import Modal from 'components/Modal/Modal';
 
@@ -9,9 +9,22 @@ export default function ImageGalleryItem({ data }) {
     setShowModal(true);
   };
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setShowModal(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyPress = e => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [closeModal]);
 
   return (
     <div className={styles.imageContainer}>
