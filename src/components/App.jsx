@@ -54,7 +54,7 @@ export const App = () => {
     <div className="container">
       <SearchBar onSearch={handleSearch} />
       <ImageGallery searchValue={data.hits} />
-      <div className={styles.loaderContainer}>{loader ? <Loader /> : null}</div>
+      {loader ? <Loader /> : null}
 
       {counter < data.totalHits ? (
         <div className={styles.button}>
